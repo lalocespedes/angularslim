@@ -41,7 +41,7 @@ module.exports = function (grunt) {
         files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
         tasks: ['newer:jshint:all', 'newer:jscs:all'],
         options: {
-          livereload: '<%= connect.options.livereload %>'
+          livereload: '<%= php.options.livereload %>'
         }
       },
       jsTest: {
@@ -57,7 +57,7 @@ module.exports = function (grunt) {
       },
       livereload: {
         options: {
-          livereload: '<%= connect.options.livereload %>'
+          livereload: '<%= php.options.livereload %>'
         },
         files: [
           '<%= yeoman.app %>/{,*/}*.html',
@@ -68,28 +68,29 @@ module.exports = function (grunt) {
     },
 
     // The actual grunt server settings
-    connect: {
+    php: {
       options: {
         port: 9000,
         // Change this to '0.0.0.0' to access the server from outside.
         hostname: 'localhost',
-        livereload: 35729
+        livereload: 35729,
+        base:'<%= yeoman.app %>'
       },
       livereload: {
         options: {
           open: true,
-          middleware: function (connect) {
+          middleware: function (php) {
             return [
-              connect.static('.tmp'),
-              connect().use(
+              php.static('.tmp'),
+              php().use(
                 '/bower_components',
-                connect.static('./bower_components')
+                php.static('./bower_components')
               ),
-              connect().use(
+              php().use(
                 '/app/styles',
-                connect.static('./app/styles')
+                php.static('./app/styles')
               ),
-              connect.static(appConfig.app)
+              php.static(appConfig.app)
             ];
           }
         }
@@ -97,15 +98,15 @@ module.exports = function (grunt) {
       test: {
         options: {
           port: 9001,
-          middleware: function (connect) {
+          middleware: function (php) {
             return [
-              connect.static('.tmp'),
-              connect.static('test'),
-              connect().use(
+              php.static('.tmp'),
+              php.static('test'),
+              php().use(
                 '/bower_components',
-                connect.static('./bower_components')
+                php.static('./bower_components')
               ),
-              connect.static(appConfig.app)
+              php.static(appConfig.app)
             ];
           }
         }
@@ -427,9 +428,9 @@ module.exports = function (grunt) {
   });
 
 
-  grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
+  grunt.registerTask('serve', 'Compile then start a php web server', function (target) {
     if (target === 'dist') {
-      return grunt.task.run(['build', 'connect:dist:keepalive']);
+      return grunt.task.run(['build', 'php:dist:keepalive']);
     }
 
     grunt.task.run([
@@ -437,7 +438,7 @@ module.exports = function (grunt) {
       'wiredep',
       'concurrent:server',
       'postcss:server',
-      'connect:livereload',
+      'php:livereload',
       'watch'
     ]);
   });
@@ -452,7 +453,7 @@ module.exports = function (grunt) {
     'wiredep',
     'concurrent:test',
     'postcss',
-    'connect:test',
+    'php:test',
     'karma'
   ]);
 
