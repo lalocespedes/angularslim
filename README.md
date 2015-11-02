@@ -5,6 +5,12 @@ version 0.14.0.
 
 ## Build & development
 
+To install
+
+Run npm install -- as admin/root
+
+Run bower install -- as normal user
+
 Run `grunt` for building and `grunt serve` for preview.
 
 ## Testing
